@@ -834,7 +834,7 @@ const DATA = [
 // Kosongkan ("") kalau belum mau pakai Sheets — situs akan tetap
 // jalan normal pakai data bawaan di atas.
 // =====================================================================
-const SHEET_CSV_URL = "";
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSmT2CtYNPePy51EugVzWegUEXDgR6onI6JZSph_z2NgPufdTzr75w-2in-xftjnEiRn3upSPSLJ-PK/pub?gid=0&single=true&output=csv";
 // =====================================================================
 
 // ---------- helpers ----------
@@ -896,10 +896,10 @@ async function loadFromSheet(){
 
     const byCat = {};
     rows.forEach(r => {
-      const [catId, name, note, h1, h2, h3, h4, foto] = r;
+      const [catId, name, note, h1, h2, h3, h4, foto, desc] = r;
       if (!catId || !name) return;
       if (!byCat[catId]) byCat[catId] = [];
-      byCat[catId].push([name.trim(), (note || "").trim(), toPrice(h1), toPrice(h2), toPrice(h3), toPrice(h4), (foto || "").trim()]);
+      byCat[catId].push([name.trim(), (note || "").trim(), toPrice(h1), toPrice(h2), toPrice(h3), toPrice(h4), (foto || "").trim(), (desc || "").trim()]);
     });
 
     let matched = 0;
@@ -1047,7 +1047,7 @@ const modalPriceList = document.getElementById("modalPriceList");
 const modalInfoNote = document.getElementById("modalInfoNote");
 
 function openDetail(cat, item){
-  const [name, note, p1, p2, p3, p4, photo] = item;
+  const [name, note, p1, p2, p3, p4, photo, desc] = item;
   const prices = [p1, p2, p3, p4];
 
   if (photo){
@@ -1063,7 +1063,7 @@ function openDetail(cat, item){
   modalNote.textContent = note || "";
   modalNote.style.display = note ? "block" : "none";
 
-  modalDesc.textContent = CATEGORY_DESC[cat.id] || "";
+  modalDesc.textContent = desc || CATEGORY_DESC[cat.id] || "";
 
   modalFeatures.innerHTML = "";
   const featureBits = (note ? note.split(",").map(s => s.trim()).filter(Boolean) : []);
